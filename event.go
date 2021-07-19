@@ -1,4 +1,4 @@
-package event
+package golisten
 
 // Event base structure for an event.
 type Event struct {

@@ -1,4 +1,4 @@
-package event
+package golisten
 
 // Listener basic interface to describe
 // an event listener.

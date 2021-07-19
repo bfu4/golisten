@@ -1,4 +1,4 @@
-package event
+package golisten
 
 // Bus base structure for an event bus
 // that may emit events to
