@@ -4,4 +4,6 @@ package golisten
 type Event struct {
 	// Name the name of the event.
 	Name string
+	// Id An identifier for the event.
+	Id int
 }
