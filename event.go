@@ -1,4 +1,4 @@
-package main
+package event
 
 // Event base structure for an event.
 type Event struct {

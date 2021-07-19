@@ -1,4 +1,4 @@
-package main
+package event
 
 // Listener basic interface to describe
 // an event listener.
