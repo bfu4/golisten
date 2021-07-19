@@ -7,7 +7,7 @@ for golang that allows emissions as go routines.
 ## Usage
 ```go
 import (
-	"github.com/bfu4/golisten/event"
+	"github.com/bfu4/golisten"
 )
 
 func UseEventBus() {
