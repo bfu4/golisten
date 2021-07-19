@@ -14,8 +14,9 @@ func UseEventBus() {
 	bus := event.CreateBus(true)
 
 	l := Listener{
-        On: func(e *Event) {
+        On: func(e *Event, data ...interface{}) {
         	println(e.Name)
+        	println(data[0].string())
         }
     },
     
@@ -26,6 +27,6 @@ func UseEventBus() {
 		Id: 1
     }
     
-    bus.CallEvent(e)
+    bus.CallEvent(e, "hi")
 }
 ```
