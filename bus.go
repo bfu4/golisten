@@ -29,24 +29,24 @@ func (bus *Bus) AddListener(listener Listener) {
 }
 
 // CallEvent call the specified event.
-func (bus *Bus) CallEvent(e Event) {
+func (bus *Bus) CallEvent(e Event, data ...interface{}) {
 	// Don't allow the calling of an event when there are no listeners
 	if len(bus.listeners) < 1 {
 		return
 	}
 	// If the bus allows emission as a go routine, we can emit them as a routine.
 	if bus.allowRoutines {
-		go doEmit(e, bus.listeners...)
+		go doEmit(e, data, bus.listeners...)
 	} else {
 		// Otherwise, run the emission not as a routine.
-		doEmit(e, bus.listeners...)
+		doEmit(e, data, bus.listeners...)
 	}
 }
 
 // doEmit do the actual event emission through this call.
 // this is in a separate function to be used as a go routine if specified.
-func doEmit(e Event, listeners ...Listener) {
+func doEmit(e Event, data []interface{}, listeners ...Listener) {
 	for _, listener := range listeners {
-		listener.On(&e)
+		listener.On(&e, data...)
 	}
 }

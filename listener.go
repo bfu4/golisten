@@ -8,5 +8,5 @@ package golisten
 // as requested on the listener initialization.
 type Listener struct {
 	// On listener function
-	On func(e *Event)
+	On func(e *Event, data ...interface{})
 }

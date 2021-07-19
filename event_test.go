@@ -9,8 +9,10 @@ func TestEventEmission(t *testing.T) {
 	bus := CreateBus(true)
 	eventName := "test-event"
 	l := Listener{
-		On: func(e *Event) {
+		On: func(e *Event, data ...interface{}) {
 			println(e.Name)
+			// We can assert the type since we know what it is.
+			println(data[0].(string))
 			if e.Name != eventName {
 				t.Error("event names do not match!")
 			}
@@ -21,5 +23,5 @@ func TestEventEmission(t *testing.T) {
 		Id: 1,
 	}
 	bus.AddListener(l)
-	bus.CallEvent(e)
+	bus.CallEvent(e, "hi")
 }
