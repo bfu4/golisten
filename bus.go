@@ -28,12 +28,33 @@ func (bus *Bus) AddListener(listener Listener) {
 	bus.listeners = append(bus.listeners, listener)
 }
 
+func (bus *Bus) AddNamedListener(name string, listener Listener) {
+	internalListener := Listener{
+		On: func(e *Event, data ...interface{}) {
+			if e.Name != name {
+				return
+			}
+
+			listener.On(e, data)
+		},
+	}
+
+	bus.AddListener(internalListener)
+}
+
+func (bus *Bus) AddNamedListeners(name string, listeners ...Listener) {
+	for _, v := range listeners {
+		bus.AddNamedListener(name, v)
+	}
+}
+
 // CallEvent call the specified event.
 func (bus *Bus) CallEvent(e Event, data ...interface{}) {
 	// Don't allow the calling of an event when there are no listeners
 	if len(bus.listeners) < 1 {
 		return
 	}
+
 	// If the bus allows emission as a go routine, we can emit them as a routine.
 	if bus.allowRoutines {
 		go doEmit(e, data, bus.listeners...)
