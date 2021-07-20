@@ -1,21 +1,23 @@
 package golisten
 
 import (
+	"reflect"
 	"testing"
 )
 
 // TestEventEmission test the emission of events
 func TestEventEmission(t *testing.T) {
 	busName := "test"
+	// Can also utilise DemandBus
 	bus := DemandRoutedBus(busName)
-	l := RegistrableListener{
-		CorrespondingBus: busName,
-		On: func(e *Event, data ...interface{}) {
-			println(e.Name)
-			// We can assert the type since we know what it is.
-			println(data[0].(string))
+	l := ListenerFrom(busName,
+		func(e *Event) {
+			dataZeroType := reflect.TypeOf(e.Data[0])
+			if dataZeroType.Name() != "string" {
+				t.Errorf("got %s, expected string", dataZeroType.Name())
+			}
 		},
-	}
+	)
 	e := CreateEvent(busName, "hi")
 	bus.AddListener(l)
 	if len(bus.Listeners()) == 0 {
@@ -26,10 +28,7 @@ func TestEventEmission(t *testing.T) {
 
 func TestNoRegistration(t *testing.T) {
 	bus := DemandRoutedBus("test")
-	l := RegistrableListener{
-		CorrespondingBus: "not-a-test",
-		On:               func(e *Event, data ...interface{}) {},
-	}
+	l := ListenerFrom("not-a-test", func(e *Event) {})
 	bus.AddListener(l)
 	if len(bus.Listeners()) != 0 {
 		t.Error("a listener registered that should not have registered")

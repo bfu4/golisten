@@ -1,5 +1,8 @@
 package golisten
 
+// The Callback type alias
+type Callback func(e *Event)
+
 // The RegisteredListener type.
 type RegisteredListener struct {
 	listener
@@ -11,7 +14,7 @@ type RegistrableListener struct {
 	// The name of the bus to register to.
 	CorrespondingBus string
 	// The listener function.
-	On               func(e *Event, data ...interface{})
+	On               Callback
 }
 
 // Listener is a basic interface to describe
@@ -22,5 +25,14 @@ type RegistrableListener struct {
 // as requested on the listener initialization.
 type listener struct {
 	// On listener function
-	On func(e *Event, data ...interface{})
+	On Callback
+}
+
+// ListenerFrom is a shorthand for creating listeners via function,
+// hiding the struct declaration.
+func ListenerFrom(busName string, callback Callback) RegistrableListener {
+	return RegistrableListener{
+		CorrespondingBus: busName,
+		On:               callback,
+	}
 }

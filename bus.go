@@ -112,6 +112,6 @@ func (bus *Bus) Listeners() []RegisteredListener {
 // this is in a separate function to be used as a go routine if specified.
 func doEmit(e Event, listeners ...RegisteredListener) {
 	for _, l := range listeners {
-		l.On(&e, e.Data)
+		l.On(&e)
 	}
 }

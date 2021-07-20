@@ -16,20 +16,15 @@ func UseEventBus() {
 
 	l := golisten.RegistrableListener{
 		CorrespondingBus: busName,
-        On: func(e *golisten.Event, data ...interface{}) {
-        	println(e.Name)
+        On: func(e *golisten.Event) {
         	// we can use a type assertion here
-        	println(data[0].(string))
+        	println(e.Data[0].(string))
+        	// will print hello
         }
     },
     
     bus.AddListener(l)
-	
-	e := golisten.Event{
-		Name: "event"
-		Id: 1
-    }
-    
-    bus.CallEvent(e, "hi")
+	e := CreateEvent("myEventName", "hello")
+    bus.CallEvent(e)
 }
 ```
