@@ -1,3 +1,3 @@
-module github.com/bfu4/golisten
+module github.com/notifysoftware/golisten
 
 go 1.16
