@@ -16,15 +16,12 @@ func TestEventEmission(t *testing.T) {
 			println(data[0].(string))
 		},
 	}
-	e := Event{
-		Name: busName,
-		Id: 1,
-	}
+	e := CreateEvent(busName, "hi")
 	bus.AddListener(l)
 	if len(bus.Listeners()) == 0 {
 		t.Error("the listener did not add!")
 	}
-	bus.CallEvent(e, "hi")
+	bus.CallEvent(e)
 }
 
 func TestNoRegistration(t *testing.T) {
