@@ -23,7 +23,7 @@ func UseEventBus() {
     )
     
     bus.AddListener(l)
-	e := CreateEvent("myEventName", "hello")
+	e := golisten.CreateEvent("myEventName", "hello")
     bus.CallEvent(e)
 }
 ```
