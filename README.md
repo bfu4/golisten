@@ -16,7 +16,8 @@ func UseEventBus() {
 	l := golisten.Listener{
         On: func(e *golisten.Event, data ...interface{}) {
         	println(e.Name)
-        	println(data[0].string())
+        	// we can use a type assertion here
+        	println(data[0].(string))
         }
     },
     
