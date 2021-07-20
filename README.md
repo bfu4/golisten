@@ -14,14 +14,13 @@ func UseEventBus() {
 	busName := "myBus"
 	bus := golisten.DemandRoutedBus(busName)
 
-	l := golisten.RegistrableListener{
-		CorrespondingBus: busName,
-        On: func(e *golisten.Event) {
+	l := golisten.ListenerFrom(busName,
+        func(e *golisten.Event) {
         	// we can use a type assertion here
         	println(e.Data[0].(string))
         	// will print hello
-        }
-    },
+        },
+    )
     
     bus.AddListener(l)
 	e := CreateEvent("myEventName", "hello")
