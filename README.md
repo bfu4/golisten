@@ -11,9 +11,11 @@ import (
 )
 
 func UseEventBus() {
-	bus := golisten.CreateBus(true)
+	busName := "myBus"
+	bus := golisten.DemandRoutedBus(busName)
 
-	l := golisten.Listener{
+	l := golisten.RegistrableListener{
+		CorrespondingBus: busName,
         On: func(e *golisten.Event, data ...interface{}) {
         	println(e.Name)
         	// we can use a type assertion here
