@@ -11,10 +11,10 @@ import (
 )
 
 func UseEventBus() {
-	bus := event.CreateBus(true)
+	bus := golisten.CreateBus(true)
 
-	l := Listener{
-        On: func(e *Event, data ...interface{}) {
+	l := golisten.Listener{
+        On: func(e *golisten.Event, data ...interface{}) {
         	println(e.Name)
         	println(data[0].string())
         }
@@ -22,7 +22,7 @@ func UseEventBus() {
     
     bus.AddListener(l)
 	
-	e := event.Event{
+	e := golisten.Event{
 		Name: "event"
 		Id: 1
     }
