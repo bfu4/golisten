@@ -28,8 +28,8 @@ var (
 // registered listeners.
 type Bus struct {
 	registeredName string
-	allowRoutines bool
-	listeners     []RegisteredListener
+	allowRoutines  bool
+	listeners      []RegisteredListener
 }
 
 // DemandBus demands a bus without goroutine capabilities.
@@ -60,8 +60,8 @@ func demand(registration string, allowRoutines bool) Bus {
 func createBus(registration string, allowRoutines bool) Bus {
 	return Bus{
 		registeredName: registration,
-		allowRoutines: allowRoutines,
-		listeners:     make([]RegisteredListener, 0),
+		allowRoutines:  allowRoutines,
+		listeners:      make([]RegisteredListener, 0),
 	}
 }
 
@@ -74,17 +74,11 @@ func (bus *Bus) AddListeners(listeners ...RegistrableListener) {
 
 // AddListener add a listener to the event bus.
 func (bus *Bus) AddListener(rl RegistrableListener) {
-	// Check the registration with the registrable listener
-	// If the names do not match, the should be ignored.
-	if rl.CorrespondingBus != bus.registeredName {
-		return
-	}
-	l := listener{
-		On: rl.On,
-	}
 	registered := RegisteredListener{
-		listener:  l,
-		EventName: bus.registeredName,
+		listener: &listener{
+			On: rl.On,
+		},
+		EventName: rl.EventName,
 	}
 	bus.listeners = append(bus.listeners, registered)
 }
@@ -112,6 +106,8 @@ func (bus *Bus) Listeners() []RegisteredListener {
 // this is in a separate function to be used as a go routine if specified.
 func doEmit(e Event, listeners ...RegisteredListener) {
 	for _, l := range listeners {
-		l.On(&e)
+		if l.EventName == e.Name {
+			l.On(&e)
+		}
 	}
 }

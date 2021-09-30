@@ -5,14 +5,14 @@ type Callback func(e *Event)
 
 // The RegisteredListener type.
 type RegisteredListener struct {
-	listener
+	*listener
 	EventName string
 }
 
 // A RegistrableListener is a listener structure that is allowed to be registered.
 type RegistrableListener struct {
 	// The name of the bus to register to.
-	CorrespondingBus string
+	EventName string
 	// The listener function.
 	On               Callback
 }
@@ -30,9 +30,9 @@ type listener struct {
 
 // ListenerFrom is a shorthand for creating listeners via function,
 // hiding the struct declaration.
-func ListenerFrom(busName string, callback Callback) RegistrableListener {
+func ListenerFrom(eventName string, callback Callback) RegistrableListener {
 	return RegistrableListener{
-		CorrespondingBus: busName,
-		On:               callback,
+		EventName: eventName,
+		On:        callback,
 	}
 }

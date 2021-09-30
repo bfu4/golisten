@@ -12,9 +12,10 @@ import (
 
 func UseEventBus() {
 	busName := "myBus"
+	eventName := "myEventName"
 	bus := golisten.DemandRoutedBus(busName)
 
-	l := golisten.ListenerFrom(busName,
+	l := golisten.ListenerFrom(eventName,
         func(e *golisten.Event) {
         	// we can use a type assertion here
         	println(e.Data[0].(string))
@@ -23,7 +24,7 @@ func UseEventBus() {
     )
     
     bus.AddListener(l)
-	e := golisten.CreateEvent("myEventName", "hello")
+	e := golisten.CreateEvent(eventName, "hello")
     bus.CallEvent(e)
 }
 ```
